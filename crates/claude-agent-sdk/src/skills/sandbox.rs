@@ -73,23 +73,39 @@
 //!
 //! ```no_run
 //! use claude_agent_sdk::skills::sandbox::SandboxConfig;
-//! use claude_agent_sdk::skills::auditor::SkillAuditor;
+//! use claude_agent_sdk::skills::auditor::{SkillAuditor, AuditConfig, RiskLevel};
+//! use claude_agent_sdk::skills::skill_md::SkillMdFile;
 //!
-//! let config = SandboxConfig::restrictive();
-//! let auditor = SkillAuditor::new(config.into());
+//! # async fn example() -> Result<(), Box<dyn std::error::Error>> {
+//! let sandbox_config = SandboxConfig::restrictive();
+//! let audit_config = AuditConfig {
+//!     strict_mode: true,
+//!     allow_network: false,
+//!     check_scripts: true,
+//!     check_resources: true,
+//! };
+//! let auditor = SkillAuditor::new(audit_config);
 //!
 //! // Always audit skills before sandbox execution
+//! let skill = SkillMdFile::parse("path/to/SKILL.md")?;
 //! let report = auditor.audit(&skill)?;
-//! if report.risk_level >= claude_agent_sdk::skills::auditor::RiskLevel::High {
+//! if report.risk_level >= RiskLevel::High {
 //!     return Err("Skill too dangerous to execute".into());
 //! }
+//! # Ok(())
+//! # }
 //! ```
 //!
 //! ### 4. Monitor Resource Usage
 //!
 //! ```no_run
-//! use claude_agent_sdk::skills::sandbox::SandboxExecutor;
+//! use claude_agent_sdk::skills::sandbox::{SandboxExecutor, SandboxConfig};
+//! use std::time::Duration;
 //!
+//! # async fn example() -> Result<(), Box<dyn std::error::Error>> {
+//! let config = SandboxConfig::default();
+//! let executor = SandboxExecutor::new(config);
+//! let script = "print('hello')";
 //! let result = executor.execute(script, None).await?;
 //!
 //! // Check resource consumption
@@ -100,19 +116,27 @@
 //! if let Some(fuel) = result.fuel_consumed {
 //!     println!("Instructions executed: {}", fuel);
 //! }
+//! # Ok(())
+//! # }
 //! ```
 //!
 //! ### 5. Handle Timeouts Gracefully
 //!
 //! ```no_run
-//! use claude_agent_sdk::skills::sandbox::SandboxExecutor;
+//! use claude_agent_sdk::skills::sandbox::{SandboxExecutor, SandboxConfig};
 //!
+//! # async fn example() -> Result<(), Box<dyn std::error::Error>> {
+//! let config = SandboxConfig::default();
+//! let executor = SandboxExecutor::new(config);
+//! let script = "print('hello')";
 //! let result = executor.execute(script, None).await?;
 //!
 //! if result.timed_out {
 //!     eprintln!("Script exceeded timeout limit");
 //!     // Consider logging or notifying the user
 //! }
+//! # Ok(())
+//! # }
 //! ```
 //!
 //! ## Resource Limits Guide
@@ -166,26 +190,26 @@
 //! use claude_agent_sdk::skills::sandbox::{SandboxExecutor, SandboxConfig};
 //! use claude_agent_sdk::skills::SkillError;
 //!
-//! async fn safe_execute() -> Result<String, SkillError> {
-//!     let config = SandboxConfig::restrictive();
-//!     let executor = SandboxExecutor::new(config);
+//! # async fn safe_execute(script: &str) -> Result<String, SkillError> {
+//! let config = SandboxConfig::restrictive();
+//! let executor = SandboxExecutor::new(config);
 //!
-//!     match executor.execute(script, None).await {
-//!         Ok(result) => {
-//!             if result.is_success() {
-//!                 Ok(result.stdout)
-//!             } else {
-//!                 Err(SkillError::ExecutionFailed(
-//!                     result.error_message().unwrap_or_default()
-//!                 ))
-//!             }
-//!         },
-//!         Err(SkillError::Io(msg)) => {
-//!             Err(SkillError::Io(format!("Sandbox execution failed: {}", msg)))
-//!         },
-//!         Err(e) => Err(e),
-//!     }
+//! match executor.execute(script, None).await {
+//!     Ok(result) => {
+//!         if result.is_success() {
+//!             Ok(result.stdout)
+//!         } else {
+//!             Err(SkillError::Execution(
+//!                 result.error_message().unwrap_or_default()
+//!             ))
+//!         }
+//!     },
+//!     Err(SkillError::Io(msg)) => {
+//!         Err(SkillError::Io(format!("Sandbox execution failed: {}", msg)))
+//!     },
+//!     Err(e) => Err(e),
 //! }
+//! # }
 //! ```
 //!
 //! ## When to Use Sandbox
@@ -414,6 +438,15 @@ impl SandboxResult {
     ///
     /// ```no_run
     /// # use claude_agent_sdk::skills::sandbox::SandboxResult;
+    /// # let result = SandboxResult {
+    /// #     stdout: String::new(),
+    /// #     stderr: String::new(),
+    /// #     exit_code: 0,
+    /// #     execution_time_ms: 100,
+    /// #     timed_out: false,
+    /// #     memory_used: None,
+    /// #     fuel_consumed: None,
+    /// # };
     /// if result.is_success() {
     ///     println!("Script completed successfully");
     /// }
@@ -430,6 +463,15 @@ impl SandboxResult {
     ///
     /// ```no_run
     /// # use claude_agent_sdk::skills::sandbox::SandboxResult;
+    /// # let result = SandboxResult {
+    /// #     stdout: String::new(),
+    /// #     stderr: String::new(),
+    /// #     exit_code: 1,
+    /// #     execution_time_ms: 100,
+    /// #     timed_out: false,
+    /// #     memory_used: None,
+    /// #     fuel_consumed: None,
+    /// # };
     /// if let Some(error) = result.error_message() {
     ///     eprintln!("Script failed: {}", error);
     /// }

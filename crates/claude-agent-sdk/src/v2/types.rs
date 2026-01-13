@@ -16,13 +16,14 @@ use typed_builder::TypedBuilder;
 ///
 /// ```no_run
 /// use claude_agent_sdk::v2::SessionOptions;
+/// use claude_agent_sdk::v2::PermissionMode;
 ///
 /// // Default configuration
 /// let options = SessionOptions::default();
 ///
 /// // Custom configuration
 /// let options = SessionOptions::builder()
-///     .model("claude-sonnet-4-20250514")
+///     .model("claude-sonnet-4-20250514".to_string())
 ///     .max_turns(10)
 ///     .permission_mode(PermissionMode::BypassPermissions)
 ///     .build();

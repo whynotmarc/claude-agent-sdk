@@ -61,6 +61,7 @@ pub enum ProgressiveError {
 /// if let Some(reference) = loader.load_reference("reference.md")? {
 ///     println!("{}", reference);
 /// }
+/// # Ok::<(), Box<dyn std::error::Error>>(())
 /// ```
 #[derive(Debug, Clone)]
 pub struct ProgressiveSkillLoader {
@@ -100,6 +101,7 @@ impl ProgressiveSkillLoader {
     /// let loader = ProgressiveSkillLoader::load(".claude/skills/my-skill")?;
     /// println!("Loaded skill with {} references",
     ///          loader.get_reference_count());
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn load<P: AsRef<Path>>(skill_dir: P) -> Result<Self, ProgressiveError> {
         let skill_dir = skill_dir.as_ref();
@@ -189,6 +191,7 @@ impl ProgressiveSkillLoader {
     /// for (filename, content) in all_refs {
     ///     println!("=== {} ===\n{}", filename, content);
     /// }
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn load_all_references(&self) -> Result<HashMap<String, String>, ProgressiveError> {
         let mut loaded = HashMap::new();

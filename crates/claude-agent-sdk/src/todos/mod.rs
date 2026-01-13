@@ -282,9 +282,9 @@ impl TodoList {
     /// ```
     /// # use claude_agent_sdk::todos::TodoList;
     /// # let mut list = TodoList::new("My Tasks");
-    /// # let item = list.add("Write docs");
+    /// # let id = list.add("Write docs").id.clone();
     /// // Complete the item
-    /// # let result = list.complete(&item.id);
+    /// # let result = list.complete(&id);
     /// # assert!(result.is_ok());
     /// ```
     pub fn complete(&mut self, id: &str) -> Result<(), TodoError> {
@@ -365,9 +365,9 @@ impl TodoList {
     /// ```
     /// # use claude_agent_sdk::todos::TodoList;
     /// # let mut list = TodoList::new("My Tasks");
-    /// # let item = list.add("Write docs");
+    /// # let id = list.add("Write docs").id.clone();
     /// // Remove the item
-    /// # let result = list.remove(&item.id);
+    /// # let result = list.remove(&id);
     /// # assert!(result.is_ok());
     /// # assert_eq!(list.items.len(), 0);
     /// ```
@@ -397,8 +397,8 @@ impl TodoList {
     /// ```
     /// # use claude_agent_sdk::todos::TodoList;
     /// # let mut list = TodoList::new("My Tasks");
-    /// # let item = list.add("Write docs");
-    /// let found = list.get(&item.id);
+    /// # let id = list.add("Write docs").id.clone();
+    /// let found = list.get(&id);
     /// assert!(found.is_some());
     /// ```
     pub fn get(&self, id: &str) -> Option<&TodoItem> {
@@ -485,7 +485,7 @@ impl TodoList {
     ///
     /// ```
     /// # use claude_agent_sdk::todos::TodoList;
-    /// # let list = TodoList::new("My Tasks");
+    /// # let mut list = TodoList::new("My Tasks");
     /// # assert!(list.is_empty());
     /// # list.add("Task 1");
     /// # assert!(!list.is_empty());
@@ -505,8 +505,8 @@ impl TodoList {
     /// ```
     /// # use claude_agent_sdk::todos::TodoList;
     /// # let mut list = TodoList::new("My Tasks");
-    /// # list.add("Task 1");
-    /// # list.complete(&list.items[0].id);
+    /// # let id = list.add("Task 1").id.clone();
+    /// # list.complete(&id);
     /// # assert_eq!(list.completed_count(), 1);
     /// ```
     pub fn completed_count(&self) -> usize {
@@ -524,10 +524,10 @@ impl TodoList {
     /// ```
     /// # use claude_agent_sdk::todos::TodoList;
     /// # let mut list = TodoList::new("My Tasks");
-    /// # list.add("Task 1");
-    /// # list.add("Task 2");
-    /// # list.complete(&list.items[0].id);
-    /// # assert_eq!(list.completion_percentage(), 50);
+    /// # let id1 = list.add("Task 1").id.clone();
+    /// # let id2 = list.add("Task 2").id.clone();
+    /// # list.complete(&id1);
+    /// # assert_eq!(list.completion_percentage(), 50.0);
     /// ```
     pub fn completion_percentage(&self) -> f64 {
         if self.is_empty() {

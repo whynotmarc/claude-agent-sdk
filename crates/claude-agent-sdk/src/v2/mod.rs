@@ -36,6 +36,7 @@
 //! ### V1 API (Current/Existing)
 //! ```no_run
 //! # use claude_agent_sdk::{query, ClaudeClient, ClaudeAgentOptions};
+//! # async fn example() -> Result<(), Box<dyn std::error::Error>> {
 //! // One-shot
 //! let messages = query("What is 2 + 2?", None).await?;
 //!
@@ -44,17 +45,22 @@
 //! let mut client = ClaudeClient::new(options);
 //! client.connect().await?;
 //! client.query("Hello").await?;
+//! # Ok(())
+//! # }
 //! ```
 //!
 //! ### V2 API (Simplified)
 //! ```no_run
 //! # use claude_agent_sdk::v2::{prompt, create_session};
+//! # async fn example() -> Result<(), Box<dyn std::error::Error>> {
 //! // One-shot
 //! let result = prompt("What is 2 + 2?", Default::default()).await?;
 //!
 //! // Session-based
 //! let mut session = create_session(Default::default()).await?;
 //! session.send("Hello").await?;
+//! # Ok(())
+//! # }
 //! ```
 //!
 //! ## Key Differences

@@ -13,12 +13,14 @@
 //! ## Example
 //!
 //! ```no_run
-//! use claude_agent_sdk::skills::auditor::{SkillAuditor, AuditConfig};
+//! use claude_agent_sdk::skills::auditor::{SkillAuditor, AuditConfig, RiskLevel};
 //! use claude_agent_sdk::skills::skill_md::SkillMdFile;
 //!
 //! let config = AuditConfig {
 //!     strict_mode: true,
 //!     allow_network: false,
+//!     check_scripts: true,
+//!     check_resources: true,
 //! };
 //!
 //! let auditor = SkillAuditor::new(config);

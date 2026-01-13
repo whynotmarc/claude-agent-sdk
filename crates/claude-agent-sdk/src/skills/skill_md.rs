@@ -285,6 +285,7 @@ impl SkillMdFile {
     ///
     /// let skill = SkillMdFile::parse(".claude/skills/my-skill/SKILL.md")?;
     /// println!("Loaded skill: {}", skill.metadata.name);
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn parse<P: AsRef<Path>>(skill_md_path: P) -> Result<Self, SkillMdError> {
         let path = skill_md_path.as_ref();
@@ -442,11 +443,16 @@ impl SkillMdFile {
     ///
     /// # Example
     ///
-    /// ```
+    /// ```no_run
+    /// use claude_agent_sdk::skills::skill_md::SkillMdFile;
+    ///
+    /// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
     /// let skill = SkillMdFile::parse(".claude/skills/my-skill/SKILL.md")?;
     /// if let Some(config_path) = skill.get_resource("config.json") {
     ///     let config_content = std::fs::read_to_string(config_path)?;
     /// }
+    /// # Ok(())
+    /// # }
     /// ```
     pub fn get_resource(&self, name: &str) -> Option<&PathBuf> {
         self._resource_cache.as_ref()?.get(name)
@@ -546,6 +552,7 @@ impl SkillsDirScanner {
     ///
     /// let scanner = SkillsDirScanner::new("/path/to/skills");
     /// let skills = scanner.scan()?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn new<P: AsRef<Path>>(base_dir: P) -> Self {
         Self {
@@ -566,6 +573,7 @@ impl SkillsDirScanner {
     ///
     /// let scanner = SkillsDirScanner::from_project_dir("/my/project");
     /// let skills = scanner.scan()?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn from_project_dir<P: AsRef<Path>>(project_dir: P) -> Self {
         Self {
@@ -586,6 +594,7 @@ impl SkillsDirScanner {
     ///
     /// let scanner = SkillsDirScanner::from_user_dir()?;
     /// let skills = scanner.scan()?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn from_user_dir() -> Result<Self, SkillMdError> {
         let home = std::env::var("HOME")
@@ -616,11 +625,16 @@ impl SkillsDirScanner {
     /// # Example
     ///
     /// ```no_run
+    /// use claude_agent_sdk::skills::skill_md::SkillsDirScanner;
+    ///
+    /// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
     /// let scanner = SkillsDirScanner::from_project_dir(".");
     /// let skills = scanner.scan()?;
     /// for skill in skills {
     ///     println!("Found skill: {}", skill.metadata.name);
     /// }
+    /// # Ok(())
+    /// # }
     /// ```
     pub fn scan(&self) -> Result<Vec<SkillMdFile>, SkillMdError> {
         if !self.base_dir.exists() {
@@ -699,6 +713,8 @@ impl SkillsDirScanner {
     /// # Example
     ///
     /// ```no_run
+    /// use claude_agent_sdk::skills::skill_md::SkillsDirScanner;
+    ///
     /// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
     /// let scanner = SkillsDirScanner::from_project_dir(".");
     /// let skills = scanner.scan_parallel().await?;

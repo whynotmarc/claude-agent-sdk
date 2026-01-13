@@ -14,9 +14,10 @@
 //! ## Example
 //!
 //! ```no_run
-//! use claude_agent_sdk::orchestration::registry::{AgentRegistry, AgentDefinition};
-//! use claude_agent_sdk::orchestration::agent::SimpleAgent;
+//! use claude_agent_sdk::orchestration::registry::{AgentRegistry, AgentMetadata};
+//! use claude_agent_sdk::orchestration::agent::{SimpleAgent, AgentOutput};
 //!
+//! # async fn example() -> Result<(), Box<dyn std::error::Error>> {
 //! let mut registry = AgentRegistry::new();
 //!
 //! // Define an agent
@@ -24,11 +25,28 @@
 //!     Ok(AgentOutput::new(format!("Researched: {}", input.content)))
 //! });
 //!
+//! // Define metadata
+//! let metadata = AgentMetadata {
+//!     id: "researcher".to_string(),
+//!     name: "Academic Researcher".to_string(),
+//!     description: "Expert in academic research".to_string(),
+//!     category: "research".to_string(),
+//!     version: "1.0.0".to_string(),
+//!     tools: vec!["search".to_string(), "read".to_string()],
+//!     skills: vec![],
+//!     tags: vec!["academic".to_string()],
+//!     max_retries: 3,
+//!     timeout_secs: 60,
+//!     enabled: true,
+//! };
+//!
 //! // Register the agent
-//! registry.register(Box::new(agent)).unwrap();
+//! registry.register(Box::new(agent), metadata).await?;
 //!
 //! // Retrieve and use the agent
-//! let agent = registry.get("researcher").unwrap();
+//! let agent = registry.get("researcher").await?;
+//! # Ok(())
+//! # }
 //! ```
 
 use crate::orchestration::agent::{Agent, AgentError};

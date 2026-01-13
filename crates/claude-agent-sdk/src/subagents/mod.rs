@@ -19,7 +19,7 @@ pub use types::{
 ///
 /// #[tokio::main]
 /// async fn example() -> Result<(), Box<dyn std::error::Error>> {
-///     let executor = SubagentExecutor::new(DelegationStrategy::Auto);
+///     let mut executor = SubagentExecutor::new(DelegationStrategy::Auto);
 ///
 ///     // Register a subagent
 ///     let subagent = Subagent {
@@ -80,7 +80,7 @@ impl SubagentExecutor {
     /// ```no_run
     /// # use claude_agent_sdk::subagents::{SubagentExecutor, Subagent, DelegationStrategy};
     /// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
-    /// # let executor = SubagentExecutor::new(DelegationStrategy::Auto);
+    /// # let mut executor = SubagentExecutor::new(DelegationStrategy::Auto);
     /// let subagent = Subagent {
     ///     name: "my-agent".to_string(),
     ///     description: "Description".to_string(),
