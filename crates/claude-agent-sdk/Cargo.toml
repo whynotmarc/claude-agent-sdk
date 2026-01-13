@@ -1,0 +1,46 @@
+[package]
+name = "claude-agent-sdk"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+
+[dependencies]
+# Workspace dependencies
+tokio = { workspace = true }
+async-trait = { workspace = true }
+futures = { workspace = true }
+async-stream = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+serde_yaml = { workspace = true, optional = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+regex = { workspace = true }
+indexmap = { workspace = true }
+semver = { workspace = true }
+paste = { workspace = true }
+typed-builder = { workspace = true }
+rusqlite = { workspace = true }
+reqwest = { workspace = true }
+
+# Optional dependencies (defined locally, not from workspace)
+notify = { version = "7.0", optional = true }
+notify-debouncer-mini = { version = "0.5", optional = true }
+wasm-sandbox = { version = "0.1", optional = true }
+
+[features]
+default = ["yaml"]
+yaml = ["serde_yaml"]
+sandbox = ["wasm-sandbox"]
+hot-reload = ["notify", "notify-debouncer-mini"]
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+tempfile = { workspace = true }

@@ -1,0 +1,62 @@
+# Build artifacts
+/target
+Cargo.lock
+*.o
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Environment files (IMPORTANT: Never commit these!)
+.env
+.env.local
+.env.*.local
+*.env
+.envrc
+
+# API keys and secrets (IMPORTANT: Never commit these!)
+*.key
+*.pem
+*.cert
+*.crt
+secrets/
+credentials/
+.private/
+
+# IDE files
+.vscode
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Worktrees
+.tda-worktrees/
+
+# Test artifacts
+*.log
+coverage/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+
+# Documentation build
+claudedocs/
+*.md.bak
+
+# Analysis reports (optional - comment out if you want to track these)
+EXAMPLES_ANALYSIS_REPORT.md
+EXECUTION_SUMMARY.md
+FINAL_EXECUTION_REPORT.md
+skill_analysis_report.json

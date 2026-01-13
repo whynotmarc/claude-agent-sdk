@@ -1,0 +1,19 @@
+# Clippy 配置文件
+
+# 复杂度阈值
+cognitive-complexity-threshold = 30
+too-many-arguments-threshold = 7
+type-complexity-threshold = 250
+
+# 允许测试中的特定模式
+allow-expect-in-tests = true
+allow-unwrap-in-tests = true
+allow-panic-in-tests = true
+
+# 性能相关
+vec-box-size-threshold = 512
+stack-size-threshold = 512000
+
+# 代码样式
+enum-variant-name-threshold = 3
+literal-representation-threshold = 3
