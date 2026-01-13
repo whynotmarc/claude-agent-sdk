@@ -1,7 +1,7 @@
 # Claude Agent SDK for Rust
 
-[![Crates.io](https://img.shields.io/crates/v/claude-agent-sdk-rs.svg)](https://crates.io/crates/claude-agent-sdk-rs)
-[![Documentation](https://docs.rs/claude-agent-sdk-rs/badge.svg)](https://docs.rs/claude-agent-sdk-rs)
+[![Crates.io](https://img.shields.io/crates/v/cc-agent-sdk.svg)](https://crates.io/crates/cc-agent-sdk)
+[![Documentation](https://docs.rs/cc-agent-sdk/badge.svg)](https://docs.rs/cc-agent-sdk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/louloulin/claude-agent-sdk/build)](https://github.com/louloulin/claude-agent-sdk/actions)
 
@@ -147,14 +147,14 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-claude-agent-sdk = "0.1"
+cc-agent-sdk = "0.1"
 tokio = { version = "1", features = ["full"] }
 ```
 
 Or use cargo-add:
 
 ```bash
-cargo add claude-agent-sdk
+cargo add cc-agent-sdk
 cargo add tokio --features full
 ```
 
@@ -1083,7 +1083,7 @@ let results = futures::future::join_all(handles).await;
 
 ### Core Documentation
 
-- [API Documentation](https://docs.rs/claude-agent-sdk-rs) - Complete API reference
+- [API Documentation](https://docs.rs/cc-agent-sdk) - Complete API reference
 - [Examples Index](./crates/claude-agent-sdk/examples/README.md) - 56 working examples
 - [Architecture Overview](./docs/architecture/overview.md) - System design and architecture
 - [V2 API Guide](./docs/guides/v2-api-guide.md) - Session-based API guide
@@ -1212,7 +1212,7 @@ cargo doc --open
 ```bash
 # Clone repository
 git clone https://github.com/louloulin/claude-agent-sdk.git
-cd claude-agent-sdk-rs
+cd cc-agent-sdk
 
 # Copy environment template
 cp .env.example .env
@@ -1376,7 +1376,7 @@ SOFTWARE.
 ### Getting Help
 
 - **GitHub Issues**: [Report bugs and request features](https://github.com/louloulin/claude-agent-sdk/issues)
-- **API Documentation**: [docs.rs](https://docs.rs/claude-agent-sdk-rs)
+- **API Documentation**: [docs.rs](https://docs.rs/cc-agent-sdk)
 - **Security**: See [SECURITY.md](SECURITY.md)
 
 ### Resources
@@ -1416,4 +1416,4 @@ See [ROADMAP_2025.md](./docs/ROADMAP_2025.md) for upcoming features.
 
 **Built with ❤️ in Rust**
 
-*For complete documentation, visit [docs.rs](https://docs.rs/claude-agent-sdk-rs)*
+*For complete documentation, visit [docs.rs](https://docs.rs/cc-agent-sdk)*

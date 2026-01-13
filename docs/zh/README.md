@@ -1,7 +1,7 @@
 # Claude Agent SDK for Rust
 
-[![Crates.io](https://img.shields.io/crates/v/claude-agent-sdk-rs.svg)](https://crates.io/crates/claude-agent-sdk-rs)
-[![Documentation](https://docs.rs/claude-agent-sdk-rs/badge.svg)](https://docs.rs/claude-agent-sdk-rs)
+[![Crates.io](https://img.shields.io/crates/v/cc-agent-sdk.svg)](https://crates.io/crates/cc-agent-sdk)
+[![Documentation](https://docs.rs/cc-agent-sdk/badge.svg)](https://docs.rs/cc-agent-sdk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
 
 [English](README.md) | [中文](README_zh-CN.md)
@@ -33,14 +33,14 @@ Rust SDK 用于与 Claude Code CLI 交互，提供对 Claude 功能的编程访�
 
 ```toml
 [dependencies]
-claude-agent-sdk-rs = "0.3"
+cc-agent-sdk = "0.3"
 tokio = { version = "1", features = ["full"] }
 ```
 
 或使用 cargo-add:
 
 ```bash
-cargo add claude-agent-sdk-rs
+cargo add cc-agent-sdk
 cargo add tokio --features full
 ```
 

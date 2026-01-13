@@ -824,7 +824,7 @@ let options = SessionOptions::builder()
 
 - Check [MIGRATION_GUIDE.md](../../../MIGRATION_GUIDE.md)
 - Review [examples/](../../../examples/)
-- Open an [issue](https://github.com/louloulin/claude-agent-sdk-rs/issues)
+- Open an [issue](https://github.com/louloulin/cc-agent-sdk/issues)
 
 ---
 

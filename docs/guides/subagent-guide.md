@@ -785,7 +785,7 @@ let agent = Subagent::builder()
 
 - Check [examples/](../../../examples/)
 - Review [tests/](../../../tests/)
-- Open an [issue](https://github.com/louloulin/claude-agent-sdk-rs/issues)
+- Open an [issue](https://github.com/louloulin/cc-agent-sdk/issues)
 
 ---
 

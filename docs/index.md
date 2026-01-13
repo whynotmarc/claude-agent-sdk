@@ -49,8 +49,8 @@ Comprehensive documentation for the Claude Agent SDK for Rust.
 
 | Resource | Link |
 |----------|------|
-| **crates.io** | [claude-agent-sdk-rs](https://crates.io/crates/claude-agent-sdk-rs) |
-| **Docs.rs** | [API Documentation](https://docs.rs/claude-agent-sdk-rs) |
+| **crates.io** | [cc-agent-sdk](https://crates.io/crates/cc-agent-sdk) |
+| **Docs.rs** | [API Documentation](https://docs.rs/cc-agent-sdk) |
 | **Examples** | [examples/](../examples/) |
 | **GitHub** | [claude-agent-sdk](https://github.com/louloulin/claude-agent-sdk) |
 
@@ -86,8 +86,8 @@ docs/
 
 ## 🤝 Need Help?
 
-- **Issues**: [GitHub Issues](https://github.com/tyrchen/claude-agent-sdk-rs/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/tyrchen/claude-agent-sdk-rs/discussions)
+- **Issues**: [GitHub Issues](https://github.com/tyrchen/cc-agent-sdk/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/tyrchen/cc-agent-sdk/discussions)
 - **Examples**: [examples/](../examples/)
 
 ---

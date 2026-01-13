@@ -1,7 +1,7 @@
 # Claude Agent SDK Rust 版本
 
-[![Crates.io](https://img.shields.io/crates/v/claude-agent-sdk-rs.svg)](https://crates.io/crates/claude-agent-sdk-rs)
-[![Documentation](https://docs.rs/claude-agent-sdk-rs/badge.svg)](https://docs.rs/claude-agent-sdk-rs)
+[![Crates.io](https://img.shields.io/crates/v/cc-agent-sdk.svg)](https://crates.io/crates/cc-agent-sdk)
+[![Documentation](https://docs.rs/cc-agent-sdk/badge.svg)](https://docs.rs/cc-agent-sdk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/louloulin/claude-agent-sdk/build)](https://github.com/louloulin/claude-agent-sdk/actions)
 
@@ -69,7 +69,7 @@ tokio = { version = "1", features = ["full"] }
 或使用 cargo-add：
 
 ```bash
-cargo add claude-agent-sdk
+cargo add cc-agent-sdk
 cargo add tokio --features full
 ```
 
@@ -643,7 +643,7 @@ cargo build --workspace --features "full"
 ```bash
 # 克隆仓库
 git clone https://github.com/louloulin/claude-agent-sdk.git
-cd claude-agent-sdk-rs
+cd cc-agent-sdk
 
 # 安装依赖
 cargo build --workspace
@@ -690,7 +690,7 @@ cargo run --example 01_hello_world
 ## 📞 获取帮助
 
 - **问题反馈**: [GitHub Issues](https://github.com/louloulin/claude-agent-sdk/issues)
-- **文档**: [docs.rs](https://docs.rs/claude-agent-sdk-rs)
+- **文档**: [docs.rs](https://docs.rs/cc-agent-sdk)
 - **对比报告**: [SDK_COMPARISON_REPORT.md](SDK_COMPARISON_REPORT.md)
 
 ---

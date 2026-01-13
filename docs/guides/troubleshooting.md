@@ -909,7 +909,7 @@ If you can't resolve your issue:
    - [Best Practices](best-practices.md)
 
 2. **Search Issues**:
-   - [GitHub Issues](https://github.com/louloulin/claude-agent-sdk-rs/issues)
+   - [GitHub Issues](https://github.com/louloulin/cc-agent-sdk/issues)
 
 3. **Create Minimal Reproduction**:
    ```rust

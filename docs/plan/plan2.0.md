@@ -1460,7 +1460,7 @@ impl SkillsDirScanner {
 - [Demo Repository](https://github.com/anthropics/claude-agent-sdk-demos)
 
 ### 项目资源
-- [Rust SDK](https://github.com/louloulin/claude-agent-sdk-rs)
+- [Rust SDK](https://github.com/louloulin/cc-agent-sdk)
 - [测试报告](/tmp/test_fix_summary.md)
 - [Skills 示例](examples/.claude/skills/)
 

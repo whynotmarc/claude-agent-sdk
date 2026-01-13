@@ -386,7 +386,7 @@ async fn test_query() {
 - [README](README.md)
 - [中文 README](README_zh-CN.md)
 - [Examples](examples/)
-- [API Documentation](https://docs.rs/claude-agent-sdk-rs)
+- [API Documentation](https://docs.rs/cc-agent-sdk)
 
 ### 相关项目
 

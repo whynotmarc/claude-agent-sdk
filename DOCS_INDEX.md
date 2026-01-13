@@ -145,7 +145,7 @@ cargo run --example 18_max_budget_usd
 ## 📞 Support
 
 - **GitHub Issues**: [Report issues](https://github.com/louloulin/claude-agent-sdk/issues)
-- **API Documentation**: [docs.rs](https://docs.rs/claude-agent-sdk-rs)
+- **API Documentation**: [docs.rs](https://docs.rs/cc-agent-sdk)
 - **Security**: See [SECURITY.md](SECURITY.md)
 
 ---
