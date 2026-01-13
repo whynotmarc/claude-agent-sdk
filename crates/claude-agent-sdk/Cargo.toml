@@ -1,5 +1,5 @@
 [package]
-name = "claude-agent-sdk"
+name = "claude-agent-sdk-rs"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -7,6 +7,9 @@ authors.workspace = true
 license.workspace = true
 repository.workspace = true
 homepage.workspace = true
+
+[lib]
+name = "claude_agent_sdk"
 
 [dependencies]
 # Workspace dependencies
