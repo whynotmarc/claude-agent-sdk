@@ -1,5 +1,5 @@
 [package]
-name = "claude-code-sdk"
+name = "cc-agent-sdk"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
