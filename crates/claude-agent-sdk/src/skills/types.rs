@@ -43,7 +43,7 @@ impl SkillResources {
     ///
     /// # Examples
     /// ```no_run
-    /// use claude_agent_sdk_rs::skills::SkillResources;
+    /// use claude_agent_sdk::skills::SkillResources;
     ///
     /// let resources = SkillResources {
     ///     folders: vec!["./resources".into()],
@@ -101,7 +101,7 @@ impl SkillResources {
     ///
     /// # Examples
     /// ```no_run
-    /// use claude_agent_sdk_rs::skills::SkillResources;
+    /// use claude_agent_sdk::skills::SkillResources;
     ///
     /// let resources = SkillResources {
     ///     folders: vec!["./resources".into()],
@@ -138,7 +138,7 @@ impl SkillResources {
     ///
     /// # Examples
     /// ```
-    /// use claude_agent_sdk_rs::skills::SkillResources;
+    /// use claude_agent_sdk::skills::SkillResources;
     ///
     /// let mut resources = SkillResources::default();
     /// resources.add_folder("./resources");
@@ -155,7 +155,7 @@ impl SkillResources {
     ///
     /// # Examples
     /// ```
-    /// use claude_agent_sdk_rs::skills::SkillResources;
+    /// use claude_agent_sdk::skills::SkillResources;
     ///
     /// let mut resources = SkillResources::default();
     /// resources.add_tool("search".to_string());
@@ -171,7 +171,7 @@ impl SkillResources {
     ///
     /// # Examples
     /// ```
-    /// use claude_agent_sdk_rs::skills::SkillResources;
+    /// use claude_agent_sdk::skills::SkillResources;
     ///
     /// let mut resources = SkillResources::default();
     /// resources.add_test("test_basic_functionality".to_string());

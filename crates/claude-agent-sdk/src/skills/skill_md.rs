@@ -281,7 +281,7 @@ impl SkillMdFile {
     /// # Example
     ///
     /// ```no_run
-    /// use claude_agent_sdk_rs::skills::skill_md::SkillMdFile;
+    /// use claude_agent_sdk::skills::skill_md::SkillMdFile;
     ///
     /// let skill = SkillMdFile::parse(".claude/skills/my-skill/SKILL.md")?;
     /// println!("Loaded skill: {}", skill.metadata.name);
@@ -542,7 +542,7 @@ impl SkillsDirScanner {
     /// # Example
     ///
     /// ```no_run
-    /// use claude_agent_sdk_rs::skills::skill_md::SkillsDirScanner;
+    /// use claude_agent_sdk::skills::skill_md::SkillsDirScanner;
     ///
     /// let scanner = SkillsDirScanner::new("/path/to/skills");
     /// let skills = scanner.scan()?;
@@ -562,7 +562,7 @@ impl SkillsDirScanner {
     /// # Example
     ///
     /// ```no_run
-    /// use claude_agent_sdk_rs::skills::skill_md::SkillsDirScanner;
+    /// use claude_agent_sdk::skills::skill_md::SkillsDirScanner;
     ///
     /// let scanner = SkillsDirScanner::from_project_dir("/my/project");
     /// let skills = scanner.scan()?;
@@ -582,7 +582,7 @@ impl SkillsDirScanner {
     /// # Example
     ///
     /// ```no_run
-    /// use claude_agent_sdk_rs::skills::skill_md::SkillsDirScanner;
+    /// use claude_agent_sdk::skills::skill_md::SkillsDirScanner;
     ///
     /// let scanner = SkillsDirScanner::from_user_dir()?;
     /// let skills = scanner.scan()?;

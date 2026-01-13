@@ -16,7 +16,7 @@
 //! ## Quick Start
 //!
 //! ```rust,no_run,ignore
-//! use claude_agent_sdk_rs::orchestration::{
+//! use claude_agent_sdk::orchestration::{
 //!     Agent, AgentInput, AgentOutput,
 //!     SequentialOrchestrator, Orchestrator,
 //! };

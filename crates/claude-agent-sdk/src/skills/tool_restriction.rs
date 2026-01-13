@@ -72,7 +72,7 @@ impl std::error::Error for ToolRestrictionError {}
 /// # Example
 ///
 /// ```no_run
-/// use claude_agent_sdk_rs::skills::tool_restriction::ToolRestriction;
+/// use claude_agent_sdk::skills::tool_restriction::ToolRestriction;
 ///
 /// let restriction = ToolRestriction::new(Some(vec![
 ///     "Read".to_string(),
@@ -104,7 +104,7 @@ impl ToolRestriction {
     /// # Example
     ///
     /// ```
-    /// use claude_agent_sdk_rs::skills::tool_restriction::ToolRestriction;
+    /// use claude_agent_sdk::skills::tool_restriction::ToolRestriction;
     ///
     /// // No restrictions
     /// let unrestricted = ToolRestriction::new(None);
@@ -129,7 +129,7 @@ impl ToolRestriction {
     /// # Example
     ///
     /// ```
-    /// use claude_agent_sdk_rs::skills::tool_restriction::ToolRestriction;
+    /// use claude_agent_sdk::skills::tool_restriction::ToolRestriction;
     ///
     /// let restriction = ToolRestriction::unrestricted();
     /// assert!(restriction.is_tool_allowed("AnyTool"));
@@ -152,7 +152,7 @@ impl ToolRestriction {
     /// # Example
     ///
     /// ```
-    /// use claude_agent_sdk_rs::skills::tool_restriction::ToolRestriction;
+    /// use claude_agent_sdk::skills::tool_restriction::ToolRestriction;
     ///
     /// let restriction = ToolRestriction::new(Some(vec![
     ///     "Read".to_string(),
@@ -221,7 +221,7 @@ impl ToolRestriction {
     /// # Example
     ///
     /// ```
-    /// use claude_agent_sdk_rs::skills::tool_restriction::ToolRestriction;
+    /// use claude_agent_sdk::skills::tool_restriction::ToolRestriction;
     ///
     /// let restriction = ToolRestriction::new(Some(vec!["Read".to_string()]));
     ///
@@ -252,7 +252,7 @@ impl ToolRestriction {
     /// # Example
     ///
     /// ```
-    /// use claude_agent_sdk_rs::skills::tool_restriction::ToolRestriction;
+    /// use claude_agent_sdk::skills::tool_restriction::ToolRestriction;
     ///
     /// let restriction = ToolRestriction::new(Some(vec![
     ///     "Read".to_string(),
@@ -278,7 +278,7 @@ impl ToolRestriction {
     /// # Example
     ///
     /// ```
-    /// use claude_agent_sdk_rs::skills::tool_restriction::ToolRestriction;
+    /// use claude_agent_sdk::skills::tool_restriction::ToolRestriction;
     ///
     /// let unrestricted = ToolRestriction::unrestricted();
     /// assert!(unrestricted.is_unrestricted());
@@ -352,7 +352,7 @@ impl ToolRestriction {
     /// # Example
     ///
     /// ```
-    /// use claude_agent_sdk_rs::skills::tool_restriction::ToolRestriction;
+    /// use claude_agent_sdk::skills::tool_restriction::ToolRestriction;
     ///
     /// let mut restriction = ToolRestriction::new(Some(vec!["Read".to_string()]));
     /// restriction.add_tool("Grep".to_string());
@@ -370,7 +370,7 @@ impl ToolRestriction {
     /// # Example
     ///
     /// ```
-    /// use claude_agent_sdk_rs::skills::tool_restriction::ToolRestriction;
+    /// use claude_agent_sdk::skills::tool_restriction::ToolRestriction;
     ///
     /// let mut restriction = ToolRestriction::new(Some(vec![
     ///     "Read".to_string(),

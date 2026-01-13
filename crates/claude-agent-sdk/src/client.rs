@@ -24,7 +24,7 @@ use crate::types::messages::{Message, UserContentBlock};
 /// # Example
 ///
 /// ```no_run
-/// use claude_agent_sdk_rs::{ClaudeClient, ClaudeAgentOptions};
+/// use claude_agent_sdk::{ClaudeClient, ClaudeAgentOptions};
 /// use futures::StreamExt;
 ///
 /// #[tokio::main]
@@ -66,7 +66,7 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```no_run
-    /// use claude_agent_sdk_rs::{ClaudeClient, ClaudeAgentOptions};
+    /// use claude_agent_sdk::{ClaudeClient, ClaudeAgentOptions};
     ///
     /// let client = ClaudeClient::new(ClaudeAgentOptions::default());
     /// ```
@@ -97,10 +97,10 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```no_run
-    /// use claude_agent_sdk_rs::{ClaudeClient, ClaudeAgentOptions};
+    /// use claude_agent_sdk::{ClaudeClient, ClaudeAgentOptions};
     ///
     /// let client = ClaudeClient::try_new(ClaudeAgentOptions::default())?;
-    /// # Ok::<(), claude_agent_sdk_rs::ClaudeError>(())
+    /// # Ok::<(), claude_agent_sdk::ClaudeError>(())
     /// ```
     pub fn try_new(options: ClaudeAgentOptions) -> Result<Self> {
         // Validate by attempting to create transport (but don't keep it)
@@ -210,7 +210,7 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::{ClaudeClient, ClaudeAgentOptions};
+    /// # use claude_agent_sdk::{ClaudeClient, ClaudeAgentOptions};
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// # let mut client = ClaudeClient::new(ClaudeAgentOptions::default());
@@ -240,7 +240,7 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::{ClaudeClient, ClaudeAgentOptions};
+    /// # use claude_agent_sdk::{ClaudeClient, ClaudeAgentOptions};
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// # let mut client = ClaudeClient::new(ClaudeAgentOptions::default());
@@ -325,7 +325,7 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::{ClaudeClient, ClaudeAgentOptions, UserContentBlock};
+    /// # use claude_agent_sdk::{ClaudeClient, ClaudeAgentOptions, UserContentBlock};
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// # let mut client = ClaudeClient::new(ClaudeAgentOptions::default());
@@ -366,7 +366,7 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::{ClaudeClient, ClaudeAgentOptions, UserContentBlock};
+    /// # use claude_agent_sdk::{ClaudeClient, ClaudeAgentOptions, UserContentBlock};
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// # let mut client = ClaudeClient::new(ClaudeAgentOptions::default());
@@ -454,7 +454,7 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::{ClaudeClient, ClaudeAgentOptions};
+    /// # use claude_agent_sdk::{ClaudeClient, ClaudeAgentOptions};
     /// # use futures::StreamExt;
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -523,7 +523,7 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::{ClaudeClient, ClaudeAgentOptions, Message};
+    /// # use claude_agent_sdk::{ClaudeClient, ClaudeAgentOptions, Message};
     /// # use futures::StreamExt;
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -668,7 +668,7 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::{ClaudeClient, ClaudeAgentOptions, Message};
+    /// # use claude_agent_sdk::{ClaudeClient, ClaudeAgentOptions, Message};
     /// # use std::collections::HashMap;
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -725,7 +725,7 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::{ClaudeClient, ClaudeAgentOptions};
+    /// # use claude_agent_sdk::{ClaudeClient, ClaudeAgentOptions};
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// # let mut client = ClaudeClient::new(ClaudeAgentOptions::default());
@@ -763,7 +763,7 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::{ClaudeClient, ClaudeAgentOptions};
+    /// # use claude_agent_sdk::{ClaudeClient, ClaudeAgentOptions};
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// # let mut client = ClaudeClient::new(ClaudeAgentOptions::default());

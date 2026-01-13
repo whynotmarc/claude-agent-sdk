@@ -23,7 +23,7 @@
 //! ### Simple Query
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::{query, Message, ContentBlock};
+//! use claude_agent_sdk::{query, Message, ContentBlock};
 //!
 //! #[tokio::main]
 //! async fn main() -> anyhow::Result<()> {
@@ -47,7 +47,7 @@
 //! ### Streaming Query
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::{query_stream, Message, ContentBlock};
+//! use claude_agent_sdk::{query_stream, Message, ContentBlock};
 //! use futures::StreamExt;
 //!
 //! #[tokio::main]
@@ -73,7 +73,7 @@
 //! ### Bidirectional Client
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::{ClaudeClient, ClaudeAgentOptions, Message, PermissionMode};
+//! use claude_agent_sdk::{ClaudeClient, ClaudeAgentOptions, Message, PermissionMode};
 //! use futures::StreamExt;
 //!
 //! #[tokio::main]
@@ -128,7 +128,7 @@
 //! ### Example: Query with Image
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::{query_with_content, UserContentBlock, Message, ContentBlock};
+//! use claude_agent_sdk::{query_with_content, UserContentBlock, Message, ContentBlock};
 //!
 //! #[tokio::main]
 //! async fn main() -> anyhow::Result<()> {
@@ -159,7 +159,7 @@
 //! ### Example: Using Image URLs
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::{query_with_content, UserContentBlock};
+//! use claude_agent_sdk::{query_with_content, UserContentBlock};
 //!
 //! #[tokio::main]
 //! async fn main() -> anyhow::Result<()> {
@@ -175,7 +175,7 @@
 //! ### Example: Streaming with Images
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::{query_stream_with_content, UserContentBlock, Message, ContentBlock};
+//! use claude_agent_sdk::{query_stream_with_content, UserContentBlock, Message, ContentBlock};
 //! use futures::StreamExt;
 //!
 //! #[tokio::main]
@@ -208,7 +208,7 @@
 //! The SDK provides extensive configuration through [`ClaudeAgentOptions`]:
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::{ClaudeAgentOptions, PermissionMode, SdkPluginConfig};
+//! use claude_agent_sdk::{ClaudeAgentOptions, PermissionMode, SdkPluginConfig};
 //!
 //! let options = ClaudeAgentOptions::builder()
 //!     .model("claude-opus-4")

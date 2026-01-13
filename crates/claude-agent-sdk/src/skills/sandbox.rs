@@ -13,7 +13,7 @@
 //! ## Quick Start
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::skills::sandbox::{SandboxConfig, SandboxExecutor};
+//! use claude_agent_sdk::skills::sandbox::{SandboxConfig, SandboxExecutor};
 //! use std::time::Duration;
 //!
 //! #[cfg(feature = "sandbox")]
@@ -46,7 +46,7 @@
 //! ### 1. Use Restrictive Config for Untrusted Skills
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::skills::sandbox::SandboxConfig;
+//! use claude_agent_sdk::skills::sandbox::SandboxConfig;
 //!
 //! // For untrusted third-party skills
 //! let restrictive = SandboxConfig::restrictive();
@@ -60,7 +60,7 @@
 //! ### 2. Whitelist Approach
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::skills::sandbox::SandboxConfig;
+//! use claude_agent_sdk::skills::sandbox::SandboxConfig;
 //! use std::time::Duration;
 //!
 //! // Start with most restrictive, then add only what's needed
@@ -72,15 +72,15 @@
 //! ### 3. Validate Before Execution
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::skills::sandbox::SandboxConfig;
-//! use claude_agent_sdk_rs::skills::auditor::SkillAuditor;
+//! use claude_agent_sdk::skills::sandbox::SandboxConfig;
+//! use claude_agent_sdk::skills::auditor::SkillAuditor;
 //!
 //! let config = SandboxConfig::restrictive();
 //! let auditor = SkillAuditor::new(config.into());
 //!
 //! // Always audit skills before sandbox execution
 //! let report = auditor.audit(&skill)?;
-//! if report.risk_level >= claude_agent_sdk_rs::skills::auditor::RiskLevel::High {
+//! if report.risk_level >= claude_agent_sdk::skills::auditor::RiskLevel::High {
 //!     return Err("Skill too dangerous to execute".into());
 //! }
 //! ```
@@ -88,7 +88,7 @@
 //! ### 4. Monitor Resource Usage
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::skills::sandbox::SandboxExecutor;
+//! use claude_agent_sdk::skills::sandbox::SandboxExecutor;
 //!
 //! let result = executor.execute(script, None).await?;
 //!
@@ -105,7 +105,7 @@
 //! ### 5. Handle Timeouts Gracefully
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::skills::sandbox::SandboxExecutor;
+//! use claude_agent_sdk::skills::sandbox::SandboxExecutor;
 //!
 //! let result = executor.execute(script, None).await?;
 //!
@@ -129,7 +129,7 @@
 //!
 //! ### Restrictive (Untrusted Skills)
 //! ```no_run
-//! # use claude_agent_sdk_rs::skills::sandbox::SandboxConfig;
+//! # use claude_agent_sdk::skills::sandbox::SandboxConfig;
 //! let config = SandboxConfig::restrictive();
 //! ```
 //! - Timeout: 10 seconds
@@ -140,7 +140,7 @@
 //!
 //! ### Default (Balanced)
 //! ```no_run
-//! # use claude_agent_sdk_rs::skills::sandbox::SandboxConfig;
+//! # use claude_agent_sdk::skills::sandbox::SandboxConfig;
 //! let config = SandboxConfig::default();
 //! ```
 //! - Timeout: 30 seconds
@@ -151,7 +151,7 @@
 //!
 //! ### Permissive (Trusted Skills)
 //! ```no_run
-//! # use claude_agent_sdk_rs::skills::sandbox::SandboxConfig;
+//! # use claude_agent_sdk::skills::sandbox::SandboxConfig;
 //! let config = SandboxConfig::permissive();
 //! ```
 //! - Timeout: 5 minutes
@@ -163,8 +163,8 @@
 //! ## Error Handling
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::skills::sandbox::{SandboxExecutor, SandboxConfig};
-//! use claude_agent_sdk_rs::skills::SkillError;
+//! use claude_agent_sdk::skills::sandbox::{SandboxExecutor, SandboxConfig};
+//! use claude_agent_sdk::skills::SkillError;
 //!
 //! async fn safe_execute() -> Result<String, SkillError> {
 //!     let config = SandboxConfig::restrictive();
@@ -232,7 +232,7 @@ use tracing::warn;
 /// # Example
 ///
 /// ```no_run
-/// use claude_agent_sdk_rs::skills::sandbox::SandboxConfig;
+/// use claude_agent_sdk::skills::sandbox::SandboxConfig;
 /// use std::time::Duration;
 ///
 /// let config = SandboxConfig::new()
@@ -368,7 +368,7 @@ impl SandboxConfig {
 /// # Example
 ///
 /// ```no_run
-/// use claude_agent_sdk_rs::skills::sandbox::SandboxResult;
+/// use claude_agent_sdk::skills::sandbox::SandboxResult;
 ///
 /// fn handle_result(result: SandboxResult) {
 ///     if result.is_success() {
@@ -413,7 +413,7 @@ impl SandboxResult {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::skills::sandbox::SandboxResult;
+    /// # use claude_agent_sdk::skills::sandbox::SandboxResult;
     /// if result.is_success() {
     ///     println!("Script completed successfully");
     /// }
@@ -429,7 +429,7 @@ impl SandboxResult {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::skills::sandbox::SandboxResult;
+    /// # use claude_agent_sdk::skills::sandbox::SandboxResult;
     /// if let Some(error) = result.error_message() {
     ///     eprintln!("Script failed: {}", error);
     /// }
@@ -461,7 +461,7 @@ impl SandboxResult {
 /// # Example
 ///
 /// ```no_run
-/// use claude_agent_sdk_rs::skills::sandbox::{SandboxConfig, SandboxExecutor};
+/// use claude_agent_sdk::skills::sandbox::{SandboxConfig, SandboxExecutor};
 /// use std::time::Duration;
 ///
 /// #[cfg(feature = "sandbox")]
@@ -494,7 +494,7 @@ impl SandboxExecutor {
     /// # Example
     ///
     /// ```no_run
-    /// use claude_agent_sdk_rs::skills::sandbox::{SandboxConfig, SandboxExecutor};
+    /// use claude_agent_sdk::skills::sandbox::{SandboxConfig, SandboxExecutor};
     ///
     /// let executor = SandboxExecutor::new(SandboxConfig::default());
     /// ```

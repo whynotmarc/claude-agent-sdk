@@ -81,7 +81,7 @@ impl VsCodeUtils {
     ///
     /// # Examples
     /// ```
-    /// # use claude_agent_sdk_rs::skills::vscode::VsCodeUtils;
+    /// # use claude_agent_sdk::skills::vscode::VsCodeUtils;
     /// assert_eq!(VsCodeUtils::normalize_name("My Skill 123"), "my-skill-123");
     /// assert_eq!(VsCodeUtils::normalize_name("Test_API"), "test-api");
     /// ```

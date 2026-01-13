@@ -14,8 +14,8 @@
 //! ## Example
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::orchestration::registry::{AgentRegistry, AgentDefinition};
-//! use claude_agent_sdk_rs::orchestration::agent::SimpleAgent;
+//! use claude_agent_sdk::orchestration::registry::{AgentRegistry, AgentDefinition};
+//! use claude_agent_sdk::orchestration::agent::SimpleAgent;
 //!
 //! let mut registry = AgentRegistry::new();
 //!

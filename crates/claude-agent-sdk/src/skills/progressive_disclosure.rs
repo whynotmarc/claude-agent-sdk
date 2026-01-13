@@ -50,7 +50,7 @@ pub enum ProgressiveError {
 /// # Example
 ///
 /// ```no_run
-/// use claude_agent_sdk_rs::skills::progressive_disclosure::ProgressiveSkillLoader;
+/// use claude_agent_sdk::skills::progressive_disclosure::ProgressiveSkillLoader;
 ///
 /// let loader = ProgressiveSkillLoader::load("/path/to/skill")?;
 ///
@@ -95,7 +95,7 @@ impl ProgressiveSkillLoader {
     /// # Example
     ///
     /// ```no_run
-    /// use claude_agent_sdk_rs::skills::progressive_disclosure::ProgressiveSkillLoader;
+    /// use claude_agent_sdk::skills::progressive_disclosure::ProgressiveSkillLoader;
     ///
     /// let loader = ProgressiveSkillLoader::load(".claude/skills/my-skill")?;
     /// println!("Loaded skill with {} references",
@@ -131,7 +131,7 @@ impl ProgressiveSkillLoader {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::skills::progressive_disclosure::ProgressiveSkillLoader;
+    /// # use claude_agent_sdk::skills::progressive_disclosure::ProgressiveSkillLoader;
     /// # let loader = ProgressiveSkillLoader::load(".").unwrap();
     /// let content = loader.get_main_content();
     /// println!("Skill content:\n{}", content);
@@ -155,7 +155,7 @@ impl ProgressiveSkillLoader {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::skills::progressive_disclosure::ProgressiveSkillLoader;
+    /// # use claude_agent_sdk::skills::progressive_disclosure::ProgressiveSkillLoader;
     /// # let loader = ProgressiveSkillLoader::load(".").unwrap();
     /// // Load detailed reference documentation
     /// match loader.load_reference("reference.md") {
@@ -183,7 +183,7 @@ impl ProgressiveSkillLoader {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::skills::progressive_disclosure::ProgressiveSkillLoader;
+    /// # use claude_agent_sdk::skills::progressive_disclosure::ProgressiveSkillLoader;
     /// # let loader = ProgressiveSkillLoader::load(".").unwrap();
     /// let all_refs = loader.load_all_references()?;
     /// for (filename, content) in all_refs {
@@ -211,7 +211,7 @@ impl ProgressiveSkillLoader {
     /// # Example
     ///
     /// ```no_run
-    /// # use claude_agent_sdk_rs::skills::progressive_disclosure::ProgressiveSkillLoader;
+    /// # use claude_agent_sdk::skills::progressive_disclosure::ProgressiveSkillLoader;
     /// # let loader = ProgressiveSkillLoader::load(".").unwrap();
     /// let refs = loader.list_references();
     /// println!("Available references: {:?}", refs);

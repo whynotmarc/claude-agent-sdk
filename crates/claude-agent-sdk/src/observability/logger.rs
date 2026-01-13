@@ -14,7 +14,7 @@
 //! ## Example
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::observability::Logger;
+//! use claude_agent_sdk::observability::Logger;
 //!
 //! let logger = Logger::new("MyAgent");
 //! logger.info("Starting agent execution", &[("task_id", "123")]);

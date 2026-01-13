@@ -109,7 +109,7 @@ impl SkillRegistry {
     ///
     /// # Examples
     /// ```no_run
-    /// use claude_agent_sdk_rs::skills::SkillRegistry;
+    /// use claude_agent_sdk::skills::SkillRegistry;
     ///
     /// let packages = SkillRegistry::discover_from_dir("/path/to/skills")?;
     /// for package in packages {
@@ -184,13 +184,13 @@ impl SkillRegistry {
     ///
     /// # Examples
     /// ```no_run
-    /// use claude_agent_sdk_rs::skills::SkillRegistry;
+    /// use claude_agent_sdk::skills::SkillRegistry;
     ///
     /// let packages = SkillRegistry::discover_skill_md_from_dir(".claude/skills")?;
     /// for package in packages {
     ///     println!("Found skill: {} from SKILL.md", package.metadata.name);
     /// }
-    /// # Ok::<(), claude_agent_sdk_rs::skills::SkillError>(())
+    /// # Ok::<(), claude_agent_sdk::skills::SkillError>(())
     /// ```
     pub fn discover_skill_md_from_dir<P: AsRef<Path>>(dir: P) -> Result<Vec<SkillPackage>, SkillError> {
         let dir = dir.as_ref();
@@ -241,13 +241,13 @@ impl SkillRegistry {
     ///
     /// # Examples
     /// ```no_run
-    /// use claude_agent_sdk_rs::skills::SkillRegistry;
+    /// use claude_agent_sdk::skills::SkillRegistry;
     ///
     /// let packages = SkillRegistry::discover_from_multiple_dirs(vec![
     ///     ".claude/skills",
     ///     "~/.config/claude/skills",
     /// ])?;
-    /// # Ok::<(), claude_agent_sdk_rs::skills::SkillError>(())
+    /// # Ok::<(), claude_agent_sdk::skills::SkillError>(())
     /// ```
     pub fn discover_from_multiple_dirs<P: AsRef<Path>>(dirs: Vec<P>) -> Result<Vec<SkillPackage>, SkillError> {
         let mut all_packages = Vec::new();

@@ -13,8 +13,8 @@
 //! ## Example
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::skills::auditor::{SkillAuditor, AuditConfig};
-//! use claude_agent_sdk_rs::skills::skill_md::SkillMdFile;
+//! use claude_agent_sdk::skills::auditor::{SkillAuditor, AuditConfig};
+//! use claude_agent_sdk::skills::skill_md::SkillMdFile;
 //!
 //! let config = AuditConfig {
 //!     strict_mode: true,

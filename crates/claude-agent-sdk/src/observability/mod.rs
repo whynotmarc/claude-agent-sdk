@@ -16,7 +16,7 @@
 //! ## Example
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::observability::{Logger, MetricsCollector};
+//! use claude_agent_sdk::observability::{Logger, MetricsCollector};
 //!
 //! let logger = Logger::new("MyAgent");
 //! let metrics = MetricsCollector::new();

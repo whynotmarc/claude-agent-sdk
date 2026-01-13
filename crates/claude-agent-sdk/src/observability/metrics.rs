@@ -14,7 +14,7 @@
 //! ## Example
 //!
 //! ```no_run
-//! use claude_agent_sdk_rs::observability::metrics::{MetricsCollector, MetricKind};
+//! use claude_agent_sdk::observability::metrics::{MetricsCollector, MetricKind};
 //!
 //! let metrics = MetricsCollector::new();
 //!
