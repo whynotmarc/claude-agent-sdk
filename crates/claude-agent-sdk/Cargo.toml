@@ -8,7 +8,7 @@ license.workspace = true
 repository.workspace = true
 homepage.workspace = true
 readme = "../../README.md"
-description = "Rust SDK for Claude Code CLI - Build agents with skills, tools, and orchestration"
+description = "claude agent sdk"
 keywords = ["claude", "anthropic", "ai", "agent", "sdk"]
 categories = ["api-bindings", "development-tools"]
 
