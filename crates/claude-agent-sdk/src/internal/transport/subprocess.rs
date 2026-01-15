@@ -23,6 +23,8 @@ use crate::version::{
 
 use super::Transport;
 
+use crate::internal::cli_installer::{CliInstaller, InstallProgress};
+
 const DEFAULT_MAX_BUFFER_SIZE: usize = 10 * 1024 * 1024; // 10MB
 
 /// Query prompt type
@@ -89,7 +91,8 @@ impl SubprocessTransport {
         let cli_path = if let Some(ref path) = options.cli_path {
             path.clone()
         } else {
-            Self::find_cli()?
+            // 尝试查找 CLI，如果失败且启用自动安装，则尝试安装
+            Self::find_cli_with_auto_install(&options)?
         };
 
         let cwd = options.cwd.clone().or_else(|| std::env::current_dir().ok());
@@ -211,6 +214,81 @@ impl SubprocessTransport {
             "Claude Code CLI not found. Please ensure 'claude' is in your PATH or set CLAUDE_CLI_PATH environment variable.",
             None,
         )))
+    }
+
+    /// 查找 CLI，支持自动安装
+    ///
+    /// 首先尝试标准查找，如果失败且启用自动安装，则尝试自动安装
+    fn find_cli_with_auto_install(options: &ClaudeAgentOptions) -> Result<PathBuf> {
+        // 首先尝试标准查找
+        match Self::find_cli() {
+            Ok(path) => return Ok(path),
+            Err(_) => {
+                // CLI 未找到，检查是否启用自动安装
+                let auto_install = options.auto_install_cli
+                    || std::env::var("CLAUDE_AUTO_INSTALL_CLI")
+                        .ok()
+                        .and_then(|v| {
+                            let v_lower = v.to_lowercase();
+                            if v_lower == "true" || v_lower == "1" || v_lower == "yes" {
+                                Some(true)
+                            } else {
+                                None
+                            }
+                        })
+                        .unwrap_or(false);
+
+                if !auto_install {
+                    // 未启用自动安装，返回原始错误
+                    return Err(ClaudeError::CliNotFound(CliNotFoundError::new(
+                        "Claude Code CLI not found. Please ensure 'claude' is in your PATH or set CLAUDE_CLI_PATH environment variable.",
+                        None,
+                    )));
+                }
+
+                // 启用自动安装
+                tracing::info!("🔧 CLI not found, auto-install enabled - attempting installation...");
+            }
+        }
+
+        // 使用 runtime executor 执行异步安装
+        let rt = tokio::runtime::Runtime::new()
+            .map_err(|e| ClaudeError::InternalError(format!("Failed to create runtime: {}", e)))?;
+
+        let installer = CliInstaller::new(true);
+        let installer = if let Some(ref callback) = options.cli_install_callback {
+            installer.with_progress_callback(callback.clone())
+        } else {
+            // 默认进度回调：记录日志
+            let default_callback = std::sync::Arc::new(|event: InstallProgress| {
+                match event {
+                    InstallProgress::Checking(msg) => {
+                        tracing::info!("🔍 {}", msg);
+                    }
+                    InstallProgress::Downloading { current, total } => {
+                        if let Some(total) = total {
+                            let progress = (current as f64 / total as f64 * 100.0) as u32;
+                            tracing::info!("⬇️  Downloading: {}% ({}/{})", progress, current, total);
+                        } else {
+                            tracing::info!("⬇️  Downloading: {} bytes", current);
+                        }
+                    }
+                    InstallProgress::Installing(msg) => {
+                        tracing::info!("🔧 {}", msg);
+                    }
+                    InstallProgress::Done(path) => {
+                        tracing::info!("✅ Installation complete: {}", path.display());
+                    }
+                    InstallProgress::Failed(err) => {
+                        tracing::error!("❌ {}", err);
+                    }
+                }
+            });
+            installer.with_progress_callback(default_callback)
+        };
+
+        rt.block_on(installer.install_if_needed())
+            .map_err(|e| ClaudeError::InternalError(format!("Auto-install failed: {}", e)))
     }
 
     /// Build command arguments from options

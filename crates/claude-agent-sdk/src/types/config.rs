@@ -148,6 +148,21 @@ pub struct ClaudeAgentOptions {
     /// Only used when `auto_discover_skills` is `true`.
     #[builder(default, setter(into, strip_option))]
     pub user_skills_dir: Option<PathBuf>,
+    /// Automatically install Claude Code CLI if not found
+    ///
+    /// When enabled, the SDK will attempt to download and install the CLI
+    /// on first use if it's not already available.
+    ///
+    /// Can also be enabled via environment variable: `CLAUDE_AUTO_INSTALL_CLI=true`
+    ///
+    /// Default: `false` (opt-in for backward compatibility)
+    #[builder(default = false)]
+    pub auto_install_cli: bool,
+    /// Callback for CLI installation progress
+    ///
+    /// Provides real-time updates during automatic CLI installation.
+    #[builder(default, setter(strip_option))]
+    pub cli_install_callback: Option<Arc<dyn Fn(crate::internal::cli_installer::InstallProgress) + Send + Sync>>,
 }
 
 impl Default for ClaudeAgentOptions {

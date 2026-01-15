@@ -197,6 +197,9 @@ fn print_install_guide() {
     println!("cargo:warning=   或者使用自动安装脚本:");
     println!("cargo:warning=   ./scripts/check_and_install_claude.sh");
     println!();
+    println!("cargo:warning=   或者启用运行时自动安装:");
+    println!("cargo:warning=   export CLAUDE_AUTO_INSTALL_CLI=true");
+    println!();
     println!("cargo:warning=📚 更多信息:");
     println!("cargo:warning=   https://docs.claude.com/claude-code/installation");
     println!();
