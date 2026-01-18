@@ -18,6 +18,10 @@ use crate::orchestration::{
     context::{AgentExecution, ExecutionContext},
     orchestrator::{BaseOrchestrator, Orchestrator, OrchestratorInput, OrchestratorOutput},
 };
+use tracing::debug;
+
+/// Default maximum retries for agent execution
+const DEFAULT_MAX_RETRIES: usize = 3;
 
 /// Sequential orchestrator that executes agents one after another
 pub struct SequentialOrchestrator {
@@ -33,7 +37,7 @@ impl SequentialOrchestrator {
                 "SequentialOrchestrator",
                 "Executes agents sequentially, passing each output to the next input",
             ),
-            max_retries: 3,
+            max_retries: DEFAULT_MAX_RETRIES,
         }
     }
 
@@ -57,12 +61,12 @@ impl SequentialOrchestrator {
             let mut exec_record = AgentExecution::new(agent.name(), input.clone());
 
             if ctx.is_logging_enabled() {
-                println!(
-                    "[{}] Executing agent {}/{}: {}",
-                    self.base.name(),
-                    index + 1,
-                    agents.len(),
-                    agent.name()
+                debug!(
+                    orchestrator = %self.base.name(),
+                    agent = %agent.name(),
+                    index = index + 1,
+                    total = agents.len(),
+                    "Executing agent sequentially"
                 );
             }
 

@@ -11,6 +11,12 @@ use crate::orchestration::{
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
+/// Base delay in milliseconds for retry backoff
+const RETRY_BASE_DELAY_MS: u64 = 100;
+
+/// Maximum jitter factor (0.0 to 1.0) to add to retry delays
+const RETRY_JITTER_FACTOR: f64 = 0.3;
+
 /// Input to an orchestrator
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OrchestratorInput {
@@ -161,10 +167,23 @@ impl BaseOrchestrator {
                 Err(e) => {
                     last_error = Some(e.to_string());
                     if attempt < max_retries {
-                        tokio::time::sleep(std::time::Duration::from_millis(
-                            100 * 2_u64.pow(attempt as u32),
-                        ))
-                        .await;
+                        // Exponential backoff with jitter to prevent thundering herd
+                        let base_delay = RETRY_BASE_DELAY_MS * 2_u64.pow(attempt as u32);
+                        let jitter = {
+                            // Simple jitter using system time nanoseconds as entropy
+                            let nanos = std::time::SystemTime::now()
+                                .duration_since(std::time::UNIX_EPOCH)
+                                .map(|d| d.subsec_nanos())
+                                .unwrap_or(0);
+                            let jitter_range = (base_delay as f64 * RETRY_JITTER_FACTOR) as u64;
+                            if jitter_range > 0 {
+                                (nanos as u64) % jitter_range
+                            } else {
+                                0
+                            }
+                        };
+                        tokio::time::sleep(std::time::Duration::from_millis(base_delay + jitter))
+                            .await;
                     }
                 },
             }

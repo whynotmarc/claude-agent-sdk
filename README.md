@@ -20,7 +20,7 @@ The Claude Agent SDK for Rust provides comprehensive programmatic access to Clau
 - [Feature Comparison](#feature-comparison)
 - [Quick Start](#quick-start)
 - [Installation](#installation)
-- [API Key Setup](#api-key-setup)
+- [Authentication Setup](#authentication-setup)
 - [Core APIs](#core-apis)
   - [Simple Query API](#1-simple-query-api)
   - [Streaming API](#2-streaming-api)
@@ -139,7 +139,7 @@ Perfect for:
 
 - **Rust**: 1.90 or higher ([Install Rust](https://www.rust-lang.org/tools/install))
 - **Claude Code CLI**: Version 2.0.0 or higher ([Install Claude Code](https://docs.claude.com/claude-code))
-- **API Key**: Required from Anthropic (see setup below)
+- **Authentication**: Either OAuth/Subscription (no API key needed) or API key from Anthropic (see setup below)
 
 ### Installation
 
@@ -160,15 +160,27 @@ cargo add tokio --features full
 
 ---
 
-## 🔑 API Key Setup
+## 🔑 Authentication Setup
+
+### Option A: OAuth/Subscription (Recommended)
+
+If you have a Claude Code subscription or are using OAuth authentication, **no API key is required**. The SDK will automatically use your existing authentication when running through Claude Code CLI.
+
+Simply ensure you're logged in to Claude Code:
+
+```bash
+claude login
+```
+
+### Option B: API Key
 
 **⚠️ Security Notice**: Never commit API keys to version control!
 
-### Step 1: Get Your API Key
+#### Step 1: Get Your API Key
 
 Visit [https://console.anthropic.com/](https://console.anthropic.com/) to generate your API key.
 
-### Step 2: Configure Environment Variable
+#### Step 2: Configure Environment Variable
 
 Choose one of the following methods:
 

@@ -481,7 +481,7 @@ impl ClaudeClient {
         };
 
         Box::pin(async_stream::stream! {
-            let rx: Arc<Mutex<tokio::sync::mpsc::UnboundedReceiver<serde_json::Value>>> = {
+            let rx: Arc<Mutex<tokio::sync::mpsc::Receiver<serde_json::Value>>> = {
                 let query_guard = query.lock().await;
                 Arc::clone(&query_guard.message_rx)
             };
@@ -557,7 +557,7 @@ impl ClaudeClient {
         };
 
         Box::pin(async_stream::stream! {
-            let rx: Arc<Mutex<tokio::sync::mpsc::UnboundedReceiver<serde_json::Value>>> = {
+            let rx: Arc<Mutex<tokio::sync::mpsc::Receiver<serde_json::Value>>> = {
                 let query_guard = query.lock().await;
                 Arc::clone(&query_guard.message_rx)
             };

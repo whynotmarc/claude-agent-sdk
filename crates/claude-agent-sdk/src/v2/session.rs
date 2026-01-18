@@ -48,17 +48,20 @@ pub struct Session {
     pub options: SessionOptions,
     /// Internal client
     client: Arc<Mutex<ClaudeClient>>,
+    /// Connection state (set to false when closed)
+    connected: std::sync::atomic::AtomicBool,
 }
 
 impl Session {
     /// Create a new session (internal use)
     ///
-/// This is called by `create_session()` to initialize a new session.
+    /// This is called by `create_session()` to initialize a new session.
     fn new(id: String, options: SessionOptions, client: ClaudeClient) -> Self {
         Self {
             id,
             options,
             client: Arc::new(Mutex::new(client)),
+            connected: std::sync::atomic::AtomicBool::new(true),
         }
     }
 
@@ -165,22 +168,23 @@ impl Session {
     }
 
     /// Get the model being used for this session
-    pub async fn model(&self) -> Option<String> {
-        // TODO: Extract model from client options
-        // For now, return None as ClaudeClient doesn't expose this
-        None
+    ///
+    /// Returns the model specified in `SessionOptions`, or `None` if using the default.
+    pub fn model(&self) -> Option<&str> {
+        self.options.model.as_deref()
     }
 
     /// Check if the session is still connected
-    pub async fn is_connected(&self) -> bool {
-        // Check if client can still communicate
-        // For now, we assume it's connected if we haven't closed it
-        true
+    ///
+    /// Returns `false` after `close()` has been called.
+    pub fn is_connected(&self) -> bool {
+        self.connected.load(std::sync::atomic::Ordering::Acquire)
     }
 
     /// Close the session
     ///
     /// This method closes the connection to Claude and releases any resources.
+    /// After calling this, `is_connected()` will return `false`.
     ///
     /// # Example
     ///
@@ -192,7 +196,9 @@ impl Session {
     /// # Ok(())
     /// # }
     /// ```
-    pub async fn close(self) -> Result<()> {
+    pub async fn close(&self) -> Result<()> {
+        // Mark as disconnected
+        self.connected.store(false, std::sync::atomic::Ordering::Release);
         // Release the client connection
         // The client will be dropped when self is dropped
         Ok(())
@@ -264,18 +270,21 @@ pub async fn create_session(options: SessionOptions) -> Result<Session> {
 
 /// Resume an existing session
 ///
-/// This function resumes a previously created session using its session ID.
-/// Note: Session persistence is not yet fully implemented, so this currently
-/// creates a new session with the same ID.
+/// **Important**: True session resumption with conversation history persistence
+/// is not yet implemented. This function creates a new session with the provided ID,
+/// which is useful for session ID continuity but does NOT restore previous
+/// conversation context.
+///
+/// For actual conversation continuity, store messages externally and replay them.
 ///
 /// # Arguments
 ///
-/// * `session_id` - The ID of the session to resume
+/// * `session_id` - The ID to use for the session (does not load previous state)
 /// * `options` - Session options
 ///
 /// # Returns
 ///
-/// A resumed `Session` object
+/// A new `Session` object with the provided ID
 ///
 /// # Example
 ///
@@ -284,17 +293,23 @@ pub async fn create_session(options: SessionOptions) -> Result<Session> {
 ///
 /// #[tokio::main]
 /// async fn example() -> Result<(), Box<dyn std::error::Error>> {
+///     // Note: This creates a fresh session with the given ID
+///     // Previous conversation history is NOT restored
 ///     let session = resume_session("existing-session-id", SessionOptions::default()).await?;
-///     println!("Resumed session: {}", session.id);
+///     println!("Session created with ID: {}", session.id);
 ///     Ok(())
 /// }
 /// ```
+#[deprecated(
+    since = "0.2.0",
+    note = "Does not restore conversation history. Use create_session() and store messages externally for true persistence."
+)]
 pub async fn resume_session(
     session_id: &str,
     options: SessionOptions,
 ) -> Result<Session> {
-    // TODO: Implement proper session resumption from persistent storage
-    // For now, create a new session with the provided ID
+    // Note: This creates a new session with the provided ID.
+    // True session resumption requires persistent storage integration.
     let opts: ClaudeAgentOptions = options.clone().into();
     let mut client = ClaudeClient::new(opts);
 

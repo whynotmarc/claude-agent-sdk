@@ -22,6 +22,16 @@ use crate::orchestration::{
 use futures::future::join_all;
 use std::sync::Arc;
 use tokio::sync::Semaphore;
+use tracing::debug;
+
+/// Default maximum retries for agent execution
+const DEFAULT_MAX_RETRIES: usize = 3;
+
+/// Default parallel execution limit
+const DEFAULT_PARALLEL_LIMIT: usize = 10;
+
+/// Base delay in milliseconds for retry backoff
+const RETRY_BASE_DELAY_MS: u64 = 100;
 
 /// Parallel orchestrator that executes agents concurrently
 pub struct ParallelOrchestrator {
@@ -38,8 +48,8 @@ impl ParallelOrchestrator {
                 "ParallelOrchestrator",
                 "Executes agents in parallel and aggregates their outputs",
             ),
-            max_retries: 3,
-            parallel_limit: 10,
+            max_retries: DEFAULT_MAX_RETRIES,
+            parallel_limit: DEFAULT_PARALLEL_LIMIT,
         }
     }
 
@@ -81,12 +91,12 @@ impl ParallelOrchestrator {
                 let mut exec_record = AgentExecution::new(agent_ref.name(), input_clone.clone());
 
                 if ctx_clone.is_logging_enabled() {
-                    println!(
-                        "[{}] Executing agent {}/{}: {}",
-                        base_name,
-                        index + 1,
-                        agents_count,
-                        agent_ref.name()
+                    debug!(
+                        orchestrator = %base_name,
+                        agent = %agent_ref.name(),
+                        index = index + 1,
+                        total = agents_count,
+                        "Executing agent in parallel"
                     );
                 }
 
@@ -157,7 +167,7 @@ impl ParallelOrchestrator {
                     last_error = Some(e.to_string());
                     if attempt < max_retries {
                         tokio::time::sleep(std::time::Duration::from_millis(
-                            100 * 2_u64.pow(attempt as u32),
+                            RETRY_BASE_DELAY_MS * 2_u64.pow(attempt as u32),
                         ))
                         .await;
                     }

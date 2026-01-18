@@ -5,8 +5,13 @@ use serde_json::json;
 use std::collections::HashMap;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicU64, Ordering};
+use std::time::Duration;
 use tokio::io::AsyncWriteExt;
 use tokio::sync::{Mutex, mpsc, oneshot};
+use tracing::{error, warn};
+
+/// Channel capacity for message queue (bounded to prevent memory exhaustion)
+const MESSAGE_CHANNEL_CAPACITY: usize = 1000;
 
 use crate::errors::{ClaudeError, Result};
 use crate::types::hooks::{HookCallback, HookContext, HookInput, HookMatcher};
@@ -60,8 +65,8 @@ pub struct QueryFull {
     next_callback_id: Arc<AtomicU64>,
     request_counter: Arc<AtomicU64>,
     pending_responses: Arc<Mutex<HashMap<String, oneshot::Sender<serde_json::Value>>>>,
-    message_tx: mpsc::UnboundedSender<serde_json::Value>,
-    pub(crate) message_rx: Arc<Mutex<mpsc::UnboundedReceiver<serde_json::Value>>>,
+    message_tx: mpsc::Sender<serde_json::Value>,
+    pub(crate) message_rx: Arc<Mutex<mpsc::Receiver<serde_json::Value>>>,
     // Direct access to stdin for writes (bypasses transport lock)
     pub(crate) stdin: Option<Arc<Mutex<Option<tokio::process::ChildStdin>>>>,
     // Store initialization result for get_server_info()
@@ -71,7 +76,7 @@ pub struct QueryFull {
 impl QueryFull {
     /// Create a new Query
     pub fn new(transport: Box<dyn Transport>) -> Self {
-        let (message_tx, message_rx) = mpsc::unbounded_channel();
+        let (message_tx, message_rx) = mpsc::channel(MESSAGE_CHANNEL_CAPACITY);
 
         Self {
             transport: Arc::new(Mutex::new(transport)),
@@ -210,14 +215,23 @@ impl QueryFull {
                                         )
                                         .await
                                         {
-                                            eprintln!("Error handling control request: {}", e);
+                                            error!("Error handling control request: {}", e);
                                         }
                                     });
                                 }
                             },
                             _ => {
-                                // Regular message - send to stream
-                                let _ = message_tx.send(message);
+                                // Regular message - send to stream with backpressure
+                                if let Err(e) = message_tx.try_send(message) {
+                                    match e {
+                                        mpsc::error::TrySendError::Full(_) => {
+                                            warn!("Message channel full, message dropped - consumer may be slow");
+                                        }
+                                        mpsc::error::TrySendError::Closed(_) => {
+                                            // Channel closed, likely shutting down
+                                        }
+                                    }
+                                }
                             },
                         }
                     },
@@ -406,10 +420,20 @@ impl QueryFull {
             return Err(ClaudeError::Transport("stdin not set".to_string()));
         }
 
-        // Wait for response
-        let response = rx.await.map_err(|_| {
-            ClaudeError::ControlProtocol("Control request response channel closed".to_string())
-        })?;
+        // Wait for response with timeout to prevent indefinite hangs
+        const CONTROL_REQUEST_TIMEOUT_SECS: u64 = 30;
+        let response = tokio::time::timeout(Duration::from_secs(CONTROL_REQUEST_TIMEOUT_SECS), rx)
+            .await
+            .map_err(|_| {
+                error!("Control request timed out after {} seconds", CONTROL_REQUEST_TIMEOUT_SECS);
+                ClaudeError::ControlProtocol(format!(
+                    "Control request timed out after {} seconds",
+                    CONTROL_REQUEST_TIMEOUT_SECS
+                ))
+            })?
+            .map_err(|_| {
+                ClaudeError::ControlProtocol("Control request response channel closed".to_string())
+            })?;
 
         Ok(response)
     }

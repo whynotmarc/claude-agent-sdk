@@ -1,5 +1,6 @@
 //! Dependency resolution and management for Agent Skills
 
+use semver::{Version, VersionReq};
 use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 use std::fmt;
@@ -238,15 +239,37 @@ impl DependencyResolver {
         result
     }
 
-    /// Validate version requirements (simplified - just checks availability)
+    /// Validate version requirements using semver
+    ///
+    /// Checks that all dependencies exist and their versions satisfy
+    /// the version requirements (e.g., "^1.0.0", ">=2.0.0", "~1.2.3").
     pub fn validate_versions(&self, skills: &HashMap<String, Vec<Dependency>>) -> bool {
         for deps in skills.values() {
             for dep in deps {
-                if !self.available.contains_key(&dep.skill_id) {
+                // Check if dependency exists
+                let Some(available_version) = self.available.get(&dep.skill_id) else {
                     return false;
+                };
+
+                // If there's a version requirement, validate it
+                if let Some(ref version_req_str) = dep.version_requirement {
+                    // Parse the version requirement
+                    let Ok(version_req) = VersionReq::parse(version_req_str) else {
+                        // Invalid version requirement format
+                        return false;
+                    };
+
+                    // Parse the available version
+                    let Ok(version) = Version::parse(available_version) else {
+                        // Invalid version format in available skills
+                        return false;
+                    };
+
+                    // Check if version satisfies requirement
+                    if !version_req.matches(&version) {
+                        return false;
+                    }
                 }
-                // TODO: Implement actual version requirement parsing and checking
-                // For now, we just check if the dependency exists
             }
         }
         true

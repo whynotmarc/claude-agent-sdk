@@ -13,10 +13,17 @@
 
 use std::path::PathBuf;
 use std::sync::Arc;
+use std::time::Duration;
 use tokio::process::Command;
 use tracing::{info, warn, debug};
 
 use crate::errors::{ClaudeError, Result};
+
+/// Maximum number of retry attempts for command availability check
+const MAX_AVAILABILITY_RETRIES: u32 = 5;
+
+/// Base delay between retry attempts in milliseconds
+const AVAILABILITY_RETRY_BASE_MS: u64 = 100;
 
 /// 安装进度事件
 ///
@@ -202,19 +209,28 @@ impl CliInstaller {
 
         info!("npm install completed successfully");
 
-        // 等待文件系统更新
-        tokio::time::sleep(tokio::time::Duration::from_millis(500)).await;
+        // Verify installation with retry loop (filesystem may take time to sync)
+        for attempt in 0..MAX_AVAILABILITY_RETRIES {
+            if let Ok(output) = Command::new("claude")
+                .arg("--version")
+                .output()
+                .await
+            {
+                if output.status.success() {
+                    let version = String::from_utf8_lossy(&output.stdout);
+                    info!("✅ Claude CLI installed successfully via npm: {}", version.trim());
+                    return Ok(PathBuf::from("claude"));
+                }
+            }
 
-        // 验证安装
-        if let Ok(output) = Command::new("claude")
-            .arg("--version")
-            .output()
-            .await
-        {
-            if output.status.success() {
-                let version = String::from_utf8_lossy(&output.stdout);
-                info!("✅ Claude CLI installed successfully via npm: {}", version.trim());
-                return Ok(PathBuf::from("claude"));
+            // Exponential backoff between retries
+            if attempt < MAX_AVAILABILITY_RETRIES - 1 {
+                let delay = Duration::from_millis(
+                    AVAILABILITY_RETRY_BASE_MS * 2_u64.pow(attempt)
+                );
+                debug!("CLI not yet available, retry {}/{} after {:?}",
+                       attempt + 1, MAX_AVAILABILITY_RETRIES, delay);
+                tokio::time::sleep(delay).await;
             }
         }
 

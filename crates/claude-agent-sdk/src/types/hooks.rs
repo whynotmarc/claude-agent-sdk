@@ -172,9 +172,16 @@ pub struct PreCompactHookInput {
 }
 
 /// Hook context passed to callbacks
+///
+/// Provides contextual information to hook callbacks during execution.
 #[derive(Debug, Clone, Default)]
 pub struct HookContext {
-    /// Abort signal (future feature)
+    /// Reserved for future abort/cancellation signal support.
+    ///
+    /// This field is currently unused but reserved for implementing
+    /// cooperative cancellation in a future version. Do not rely on
+    /// its current type; it will change when the feature is implemented.
+    #[doc(hidden)]
     pub signal: Option<()>,
 }
 

@@ -8,6 +8,12 @@ const SUPPORTED_IMAGE_MIME_TYPES: &[&str] = &["image/jpeg", "image/png", "image/
 /// Maximum base64 data size (15MB results in ~20MB decoded, within Claude's limits)
 const MAX_BASE64_SIZE: usize = 15_728_640;
 
+/// Allowed URL schemes for image URLs (SSRF prevention)
+const ALLOWED_URL_SCHEMES: &[&str] = &["https", "http"];
+
+/// Maximum URL length to prevent DoS
+const MAX_URL_LENGTH: usize = 8192;
+
 /// Error types for assistant messages
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
@@ -393,10 +399,66 @@ impl UserContentBlock {
     }
 
     /// Create an image content block from URL
-    pub fn image_url(url: impl Into<String>) -> Self {
-        UserContentBlock::Image {
-            source: ImageSource::Url { url: url.into() },
+    ///
+    /// # Security
+    ///
+    /// Only `https://` and `http://` URLs are allowed to prevent SSRF attacks.
+    /// The URL is validated for proper format before being accepted.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if:
+    /// - The URL is empty
+    /// - The URL exceeds the maximum length
+    /// - The URL scheme is not `https` or `http`
+    /// - The URL format is invalid
+    pub fn image_url(url: impl Into<String>) -> crate::errors::Result<Self> {
+        let url_str = url.into();
+
+        // Validate URL is not empty
+        if url_str.is_empty() {
+            return Err(crate::errors::ImageValidationError::new(
+                "Image URL cannot be empty".to_string(),
+            )
+            .into());
         }
+
+        // Validate URL length
+        if url_str.len() > MAX_URL_LENGTH {
+            return Err(crate::errors::ImageValidationError::new(format!(
+                "URL exceeds maximum length of {} characters",
+                MAX_URL_LENGTH
+            ))
+            .into());
+        }
+
+        // Parse and validate URL scheme (SSRF prevention)
+        let scheme = url_str
+            .split("://")
+            .next()
+            .map(|s| s.to_lowercase())
+            .unwrap_or_default();
+
+        if !ALLOWED_URL_SCHEMES.contains(&scheme.as_str()) {
+            return Err(crate::errors::ImageValidationError::new(format!(
+                "Invalid URL scheme '{}'. Only {} are allowed",
+                scheme,
+                ALLOWED_URL_SCHEMES.join(", ")
+            ))
+            .into());
+        }
+
+        // Basic URL format validation (must have scheme and host)
+        if !url_str.contains("://") || url_str.split("://").nth(1).map_or(true, |h| h.is_empty()) {
+            return Err(crate::errors::ImageValidationError::new(
+                "Invalid URL format: must include scheme and host".to_string(),
+            )
+            .into());
+        }
+
+        Ok(UserContentBlock::Image {
+            source: ImageSource::Url { url: url_str },
+        })
     }
 
     /// Validate a collection of content blocks

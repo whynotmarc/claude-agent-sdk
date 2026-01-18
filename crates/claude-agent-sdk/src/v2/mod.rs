@@ -179,6 +179,7 @@ pub async fn prompt(
     let mut content = String::new();
     let mut input_tokens = 0;
     let mut output_tokens = 0;
+    let mut model: Option<String> = None;
     let mut stream = client.receive_response();
 
     use futures::StreamExt;
@@ -192,6 +193,11 @@ pub async fn prompt(
                     if let crate::types::messages::ContentBlock::Text(text_block) = block {
                         content.push_str(&text_block.text);
                     }
+                }
+
+                // Extract model from response
+                if assist_msg.message.model.is_some() {
+                    model = assist_msg.message.model.clone();
                 }
 
                 // Track token usage if available
@@ -219,7 +225,7 @@ pub async fn prompt(
         content,
         input_tokens,
         output_tokens,
-        model: None, // TODO: Extract from actual response
+        model,
     })
 }
 

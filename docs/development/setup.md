@@ -80,13 +80,28 @@ cargo test --workspace --lib
 cargo check --workspace
 ```
 
-### 4. Configure Environment
+### 4. Configure Authentication
+
+**Option A: OAuth/Subscription (Recommended)**
+
+If you have a Claude Code subscription, no API key is needed:
+
+```bash
+# Login to Claude Code (uses OAuth)
+claude login
+```
+
+**Option B: API Key**
 
 ```bash
 # Set Anthropic API key
 export ANTHROPIC_API_KEY="your_api_key_here"
+```
 
-# Optional: Set data source API keys
+**Optional: Data Source API Keys**
+
+```bash
+# Optional: Set data source API keys for specific examples
 export ALPHA_VANTAGE_API_KEY="your_alpha_vantage_key"
 ```
 
@@ -559,6 +574,14 @@ export PATH="$PATH:/path/to/claude"
 **Error**: "API key not configured"
 
 **Solution**:
+
+Option A - Use OAuth/Subscription (no API key needed):
+```bash
+# Login to Claude Code
+claude login
+```
+
+Option B - Use API Key:
 ```bash
 # Set environment variable
 export ANTHROPIC_API_KEY="your_key"

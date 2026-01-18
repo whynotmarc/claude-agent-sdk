@@ -8,7 +8,14 @@ Before running any examples, make sure you have:
 
 1. **Rust**: Version 1.90 or higher
 2. **Claude Code CLI**: Version 2.0.0 or higher
-3. **API Key**: Set your Anthropic API key
+3. **Authentication**: Either OAuth/Subscription OR API key
+
+   **Option A: OAuth/Subscription (Recommended)**
+   ```bash
+   claude login  # No API key needed
+   ```
+
+   **Option B: API Key**
    ```bash
    export ANTHROPIC_API_KEY=your_api_key_here
    ```
@@ -79,12 +86,19 @@ Enterprise features and deployment
 ## 🔧 Common Issues
 
 ### "ANTHROPIC_API_KEY not set"
+
+If using OAuth/Subscription, this error can be ignored - ensure you're logged in:
+```bash
+claude login
+```
+
+If using API key:
 ```bash
 export ANTHROPIC_API_KEY=your_key_here
 ```
 
 ### Example compiles but doesn't run
-This is expected - examples need valid API key and network connection.
+This is expected - examples need valid authentication and network connection.
 
 ## 📞 Getting Help
 

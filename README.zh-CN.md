@@ -77,7 +77,9 @@ cargo add tokio --features full
 
 - **Rust**: 1.90 或更高版本
 - **Claude Code CLI**: 2.0.0 或更高版本
-- **API Key**: 设置 `ANTHROPIC_API_KEY` 环境变量
+- **认证方式**: OAuth/订阅（无需 API Key）或设置 `ANTHROPIC_API_KEY` 环境变量
+
+> **提示**: 如果您使用 Claude Code 订阅或 OAuth 认证，**无需设置 API Key**。SDK 会自动使用您通过 Claude Code CLI 登录的认证信息。只需确保已登录：`claude login`
 
 ### 第一个查询
 

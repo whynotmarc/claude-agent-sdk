@@ -91,7 +91,7 @@ impl SubprocessTransport {
         let cli_path = if let Some(ref path) = options.cli_path {
             path.clone()
         } else {
-            // 尝试查找 CLI，如果失败且启用自动安装，则尝试安装
+            // Try to find CLI, and if not found and auto-install is enabled, attempt installation
             Self::find_cli_with_auto_install(&options)?
         };
 
@@ -216,15 +216,15 @@ impl SubprocessTransport {
         )))
     }
 
-    /// 查找 CLI，支持自动安装
+    /// Find CLI with auto-install support
     ///
-    /// 首先尝试标准查找，如果失败且启用自动安装，则尝试自动安装
+    /// First attempts standard CLI lookup; if that fails and auto-install is enabled, attempts installation
     fn find_cli_with_auto_install(options: &ClaudeAgentOptions) -> Result<PathBuf> {
-        // 首先尝试标准查找
+        // First attempt standard CLI lookup
         match Self::find_cli() {
             Ok(path) => return Ok(path),
             Err(_) => {
-                // CLI 未找到，检查是否启用自动安装
+                // CLI not found, check if auto-install is enabled
                 let auto_install = options.auto_install_cli
                     || std::env::var("CLAUDE_AUTO_INSTALL_CLI")
                         .ok()
@@ -239,20 +239,20 @@ impl SubprocessTransport {
                         .unwrap_or(false);
 
                 if !auto_install {
-                    // 未启用自动安装，返回原始错误
+                    // Auto-install not enabled, return the original error
                     return Err(ClaudeError::CliNotFound(CliNotFoundError::new(
                         "Claude Code CLI not found. Please ensure 'claude' is in your PATH or set CLAUDE_CLI_PATH environment variable.",
                         None,
                     )));
                 }
 
-                // 启用自动安装
+                // Auto-install is enabled
                 tracing::info!("🔧 CLI not found, auto-install enabled - attempting installation...");
             }
         }
 
-        // 使用 runtime executor 执行异步安装
-        // 注意：我们在独立线程中运行，以避免在已有的 tokio runtime 中调用 block_on 导致 panic
+        // Use a runtime executor to run async installation
+        // Note: We run in a separate thread to avoid calling block_on inside an existing tokio runtime (which would panic)
         let installer_options = options.clone();
         std::thread::spawn(move || {
             let rt = tokio::runtime::Runtime::new()
@@ -262,7 +262,7 @@ impl SubprocessTransport {
             let installer = if let Some(ref callback) = installer_options.cli_install_callback {
                 installer.with_progress_callback(callback.clone())
             } else {
-                // 默认进度回调：记录日志
+                // Default progress callback: log events
                 let default_callback = std::sync::Arc::new(|event: InstallProgress| {
                     match event {
                         InstallProgress::Checking(msg) => {
